@@ -6,4 +6,5 @@
 - Copy/rename the `OAuthTokenEXAMPLE.txt` file to `OAuthToken.txt`
 - Copy and paste the token generated in the first step into this file (including the quotes)
     - Save the file
-- Run `program.js`
+- Run `npm install` to install packages
+- Run `node program.js` to start the program

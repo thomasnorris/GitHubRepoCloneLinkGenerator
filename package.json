@@ -1,5 +1,5 @@
 {
-  "name": "GitHubRepoViewer",
+  "name": "GitHubRepoCloneLinkGenerator",
   "version": "1.0.0",
   "description": "Script to list GitHub repo's for easy cloning using OAuth 2.0 and the GitHub API",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thomasnorris/GitHubRepoViewer.git"
+    "url": "git+https://github.com/thomasnorris/GitHubRepoCloneLinkGenerator.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thomasnorris/GitHubRepoViewer/issues"
+    "url": "https://github.com/thomasnorris/GitHubRepoCloneLinkGenerator/issues"
   },
-  "homepage": "https://github.com/thomasnorris/GitHubRepoViewer#readme",
+  "homepage": "https://github.com/thomasnorris/GitHubRepoCloneLinkGenerator#readme",
   "dependencies": {
     "line-reader": "^0.4.0",
     "request": "^2.88.0"

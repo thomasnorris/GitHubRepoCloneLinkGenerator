@@ -5,19 +5,23 @@
 
     var _request = require('request');
 
-    var requestOptions = {
-        url: '\"' + GITHUB_API_BASE_URL + GITHUB_REPOS_URL + '\"',
-        headers: {
-            'Authorization': 'Bearer ' + GetOAuthToken()
-        }
-    };
+    GetOAuthToken((token) => {
+        var requestOptions = {
+            url: '\"' + GITHUB_API_BASE_URL + GITHUB_REPOS_URL + '\"',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        };
 
-    function GetOAuthToken() {
+        console.log(requestOptions);
+    });
+
+    function GetOAuthToken(callback) {
         CheckFileExists(() => {
             var lr = require('line-reader');
 
             lr.eachLine(AUTH_FILE_NAME, (line, last) => {
-                console.log(line);
+                callback(line);
             });
         });
 
@@ -29,11 +33,9 @@
                 else {
                     console.log('File \"' + AUTH_FILE_NAME + '\" does not exist, exiting.');
                     process.exit(0);
-                }
-
-            })
-        }
-
-    }
+                };
+            });
+        };
+    };
 
 })();

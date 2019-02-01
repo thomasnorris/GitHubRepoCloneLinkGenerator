@@ -15,9 +15,20 @@
         };
 
         _request(requestOptions, (err, res, body) => {
-            console.log(res.statusCode);
+            if (!err && res.statusCode === 200) {
+                GenerateAndPrintList(JSON.parse(body));
+            }
         });
     });
+
+    function GenerateAndPrintList(body) {
+        console.log('Clone links for all remote repos (including forks).\nCopy any of these links to clone via ssh:\n');
+        body.forEach((key) => {
+            console.log(key.ssh_url);
+        })
+        console.log('\nGoodbye!');
+        process.exit(0);
+    }
 
     function GetOAuthToken(callback) {
         CheckFileExists(() => {

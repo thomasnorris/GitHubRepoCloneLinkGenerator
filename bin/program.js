@@ -7,13 +7,16 @@
 
     GetOAuthToken((token) => {
         var requestOptions = {
-            url: '\"' + GITHUB_API_BASE_URL + GITHUB_REPOS_URL + '\"',
+            url: GITHUB_API_BASE_URL + GITHUB_REPOS_URL,
             headers: {
+                'User-Agent': 'request',
                 'Authorization': 'Bearer ' + token
             }
         };
 
-        console.log(requestOptions);
+        _request(requestOptions, (err, res, body) => {
+            console.log(res.statusCode);
+        });
     });
 
     function GetOAuthToken(callback) {
@@ -21,7 +24,7 @@
             var lr = require('line-reader');
 
             lr.eachLine(AUTH_FILE_NAME, (line, last) => {
-                callback(line);
+                callback(line.split('\"').join(''));
             });
         });
 

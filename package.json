@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/thomasnorris/GitHubRepoViewer/issues"
   },
-  "homepage": "https://github.com/thomasnorris/GitHubRepoViewer#readme"
+  "homepage": "https://github.com/thomasnorris/GitHubRepoViewer#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }

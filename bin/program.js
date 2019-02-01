@@ -22,12 +22,11 @@
     });
 
     function GenerateAndPrintList(body) {
-        console.log('Clone links for all remote repos (including forks).\nCopy any of these links to clone via ssh:\n');
+        console.log('Copy any of these links to clone via ssh:\n');
         body.forEach((key) => {
             console.log(key.ssh_url);
         })
-        console.log('\nGoodbye!');
-        process.exit(0);
+        Exit('\nGoodbye!');
     }
 
     function GetOAuthToken(callback) {
@@ -44,12 +43,15 @@
             fs.access(AUTH_FILE_NAME, fs.constants.F_OK, (err) => {
                 if (err === null)
                     callback();
-                else {
-                    console.log('File \"' + AUTH_FILE_NAME + '\" does not exist, exiting.');
-                    process.exit(0);
-                };
+                else
+                    Exit('File \"' + AUTH_FILE_NAME + '\" does not exist, exiting.');
             });
         };
     };
+
+    function Exit(message) {
+        console.log(message);
+        process.exit(0)
+    }
 
 })();

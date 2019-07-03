@@ -15,37 +15,29 @@
 
         request(requestOptions, (err, res, body) => {
             if (!err && res.statusCode === 200) {
-                GenerateAndPrintList(JSON.parse(body));
+                console.log('Copy any of these links to clone via ssh:\n');
+
+                JSON.parse(body).forEach((key) => {
+                    console.log(key.ssh_url);
+                });
+
+                Exit();
             }
+
+            Exit('There was an error with the request. Status code: ' + res.statusCode)
         });
     });
 
-    function GenerateAndPrintList(body) {
-        console.log('Copy any of these links to clone via ssh:\n');
-
-        body.forEach((key) => {
-            console.log(key.ssh_url);
-        });
-
-        Exit();
-    }
-
     function GetOAuthToken(callback) {
-        CheckFileExists(() => {
+        var fs = require('fs');
+        fs.access(AUTH_FILE_FULL_PATH, fs.constants.F_OK, (err) => {
+            if (err !== null)
+                Exit('File \"' + AUTH_FILE_FULL_PATH + '\" does not exist, exiting.');
+
             require('line-reader').eachLine(AUTH_FILE_FULL_PATH, (line, last) => {
                 callback(line.split('\"').join(''));
             });
         });
-
-        function CheckFileExists(callback) {
-            var fs = require('fs');
-            fs.access(AUTH_FILE_FULL_PATH, fs.constants.F_OK, (err) => {
-                if (err === null)
-                    callback();
-                else
-                    Exit('File \"' + AUTH_FILE_FULL_PATH + '\" does not exist, exiting.');
-            });
-        }
     }
 
     function Exit(message = '') {

@@ -1,4 +1,7 @@
 (function() {
+    // The name of the SSH config file Host to use (optional parameter)
+    var _ssh_config_name = process.argv.slice(2)[0];
+
     const GITHUB_API_BASE_URL = 'https://api.github.com';
     const GITHUB_REPOS_URL = '/user/repos';
     const AUTH_FILE_FULL_PATH = __dirname + '\\' + 'OAuthToken.txt';
@@ -18,7 +21,11 @@
                 console.log('Copy any of these links to clone via ssh:\n');
 
                 JSON.parse(body).forEach((key) => {
-                    console.log(key.ssh_url);
+                    var url = key.ssh_url;
+                    if (_ssh_config_name)
+                        url = url.replace('github.com', _ssh_config_name);
+
+                    console.log(url);
                 });
 
                 Exit();

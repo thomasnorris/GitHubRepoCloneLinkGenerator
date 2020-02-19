@@ -2,6 +2,9 @@
     // The name of the SSH config file Host to use (optional parameter)
     var _ssh_config_name = process.argv.slice(2)[0];
 
+    var _rl = require('readline');
+    var _clip = require('clipboardy');
+
     const GITHUB_API_BASE_URL = 'https://api.github.com';
     const GITHUB_REPOS_URL = '/user/repos';
     const AUTH_FILE_FULL_PATH = __dirname + '\\' + 'OAuthToken.txt';
@@ -17,21 +20,45 @@
         };
 
         request(requestOptions, (err, res, body) => {
-            if (!err && res.statusCode === 200) {
-                console.log('Copy any of these links to clone via ssh:\n');
+            var rl = _rl.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
 
+            if (!err && res.statusCode === 200) {
+                var repos = [];
+                var count = 0;
                 JSON.parse(body).forEach((key) => {
                     var url = key.ssh_url;
+                    var full_name = key.full_name;
+
                     if (_ssh_config_name)
                         url = url.replace('github.com', _ssh_config_name);
 
-                    console.log(url);
+                    repos.push({
+                        url: url,
+                        full_name: full_name
+                    });
+
+                    console.log(count++ + ': ' + full_name);
                 });
 
-                Exit();
-            }
+                rl.question('\nEnter repo index to copy [0 - ' + (repos.length - 1) +'] [-1 to exit]: ', (index) => {
+                    rl.close();
+                    if (index === '-1')
+                        Exit('Exiting.');
 
-            Exit('There was an error with the request. Status code: ' + res.statusCode)
+                    var repo = repos[index];
+                    if (!repo)
+                        Exit('Undefined index.');
+
+                    _clip.writeSync(repo.url);
+
+                    Exit('Clone link for \"' + repo.full_name + '\" copied to the clipboard.');
+                });
+            }
+            else
+                Exit('There was an error with the request. Status code: ' + res.statusCode)
         });
     });
 
